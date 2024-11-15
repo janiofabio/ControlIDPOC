@@ -1,0 +1,81 @@
+version: "3"
+networks:
+  trcplat-net:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: platcore-postgres-db
+    image: trcacr.azurecr.io/postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: ${PGDATA}
+    volumes:
+      - storagepostgres:/data/postgres
+    ports:
+      - ${DATABASE_EXPOSED_PORT}:${DATABASE_PORT}
+    networks:
+      - trcplat-net
+    restart: unless-stopped
+
+  pgbouncer:
+    container_name: pgboucer
+    image: trcacr.azurecr.io/pgbouncer
+    environment:
+      POSTGRESQL_HOST: ${POSTGRESQL_HOST}
+      POSTGRESQL_DATABASE: ${POSTGRES_DB}
+      POSTGRESQL_USERNAME: ${POSTGRES_USER}
+      POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRESQL_PORT: ${DATABASE_PORT}
+      PGBOUNCER_DATABASE: ${PGBOUNCER_DATABASE}
+      PGBOUNCER_AUTH_USER: ${PGBOUNCER_AUTH_USER}
+      PGBOUNCER_POOL_MODE: ${PGBOUNCER_POOL_MODE}
+      PGBOUNCER_MAX_DB_CONNECTIONS: ${PGBOUNCER_MAX_DB_CONNECTIONS}
+      PGBOUNCER_IDLE_TRANSACTION_TIMEOUT: ${PGBOUNCER_IDLE_TRANSACTION_TIMEOUT}
+      PGBOUNCER_DEFAULT_POOL_SIZE: ${PGBOUNCER_DEFAULT_POOL_SIZE}
+      PGBOUNCER_MIN_POOL_SIZE: ${PGBOUNCER_MIN_POOL_SIZE}
+      PGBOUNCER_RESERVE_POOL_SIZE: ${PGBOUNCER_RESERVE_POOL_SIZE}
+    volumes:
+      - storagepgbouncer:/docker-entrypoint-initdb.d
+    ports:
+      - ${PGBOUNCER_PORT}:${PGBOUNCER_PORT}
+    depends_on:
+      - postgres
+    networks:
+      - trcplat-net
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin
+    image: trcacr.azurecr.io/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - storagepgadmin:/var/lib/pgadmin
+    ports:
+      - 5050:80
+    depends_on:
+      - postgres
+    networks:
+      - trcplat-net
+    restart: unless-stopped
+
+volumes:
+  storagepostgres:
+    driver: azure_file
+    driver_opts:
+      share_name: postgres
+      storage_account_name: satrcpostgres
+  storagepgbouncer:
+    driver: azure_file
+    driver_opts:
+      share_name: pgbouncer
+      storage_account_name: satrcpostgres
+  storagepgadmin:
+    driver: azure_file
+    driver_opts:
+      share_name: pgadmin
+      storage_account_name: satrcpostgres

@@ -1,0 +1,246 @@
+{
+  "kind": "collectionType",
+  "collectionName": "people",
+  "info": {
+    "singularName": "person",
+    "pluralName": "people",
+    "displayName": "Person",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "pluginOptions": {},
+      "type": "string",
+      "required": true
+    },
+    "phoneDDI": {
+      "pluginOptions": {},
+      "type": "integer"
+    },
+    "phoneNumber": {
+      "pluginOptions": {},
+      "type": "biginteger"
+    },
+    "birthDate": {
+      "type": "date"
+    },
+    "admissionDate": {
+      "type": "date"
+    },
+    "email": {
+      "pluginOptions": {},
+      "type": "email",
+      "required": true
+    },
+    "registration": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "notes": {
+      "pluginOptions": {},
+      "type": "blocks"
+    },
+    "registrationName": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "personType": {
+      "pluginOptions": {},
+      "type": "enumeration",
+      "enum": [
+        "Person",
+        "Visitant"
+      ],
+      "required": false,
+      "default": "Person"
+    },
+    "visitorStartDate": {
+      "pluginOptions": {},
+      "type": "datetime"
+    },
+    "visitorEndDate": {
+      "pluginOptions": {},
+      "type": "datetime"
+    },
+    "professionalRole": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "fathersName": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "mothersName": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "nacionality": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "naturality": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "address": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "neighborhood": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "city": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "zipCode": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "tenantId": {
+      "pluginOptions": {},
+      "type": "biginteger"
+    },
+    "sipNumber": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "visitedCompanyId": {
+      "pluginOptions": {},
+      "type": "integer"
+    },
+    "visitedPersonId": {
+      "pluginOptions": {},
+      "type": "integer"
+    },
+    "visitedPersonName": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "idNumber": {
+      "type": "integer",
+      "default": 0
+    },
+    "isOperator": {
+      "type": "boolean",
+      "default": false
+    },
+    "isDeviceAdmin": {
+      "type": "boolean",
+      "default": false
+    },
+    "pinNumber": {
+      "type": "boolean"
+    },
+    "businessPhoneDDI": {
+      "type": "boolean"
+    },
+    "businessPhoneNumber": {
+      "type": "boolean"
+    },
+    "businessPhoneExtension": {
+      "type": "boolean"
+    },
+    "gender_cid": {
+      "type": "boolean"
+    },
+    "maritalStatus_CID": {
+      "type": "boolean"
+    },
+    "isRemoteOnBoarding": {
+      "type": "boolean",
+      "default": false
+    },
+    "passwordOperator": {
+      "type": "boolean"
+    },
+    "gender": {
+      "type": "enumeration",
+      "enum": [
+        "female",
+        "male",
+        "other"
+      ]
+    },
+    "maritalStatus": {
+      "type": "enumeration",
+      "enum": [
+        "single",
+        "married",
+        "divorced",
+        "widowed"
+      ]
+    },
+    "iDSecureAccess": {
+      "type": "boolean"
+    },
+    "deviceAdmin": {
+      "type": "boolean"
+    },
+    "accessProfile": {
+      "type": "string"
+    },
+    "blockList": {
+      "type": "boolean"
+    },
+    "iDSecurePassword": {
+      "type": "string"
+    },
+    "releasePeriodStart": {
+      "type": "date"
+    },
+    "releasePeriodEnd": {
+      "type": "date"
+    },
+    "occupation": {
+      "type": "string"
+    },
+    "mobileNumber": {
+      "type": "string"
+    },
+    "extensionNumber": {
+      "type": "string"
+    },
+    "socialName": {
+      "type": "string"
+    },
+    "registryName": {
+      "type": "string"
+    },
+    "nationality": {
+      "type": "string"
+    },
+    "naturalness": {
+      "type": "string"
+    },
+    "rg": {
+      "type": "string"
+    },
+    "cpf": {
+      "type": "string"
+    },
+    "passport": {
+      "type": "string"
+    },
+    "personPhoto": {
+      "type": "text"
+    },
+    "attachmentNumber": {
+      "type": "string"
+    },
+    "attachmentType": {
+      "type": "string"
+    },
+    "attachmentUrl": {
+      "type": "string"
+    },
+    "attachmentId": {
+      "type": "string"
+    }
+  }
+}

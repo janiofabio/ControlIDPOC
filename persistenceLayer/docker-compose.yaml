@@ -1,0 +1,67 @@
+version: "3"
+networks:
+  trcplat-net:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: platcore-postgres-db
+    image: postgres:16
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: ${PGDATA}
+    volumes:
+      - ${VOLUME_PATH}postgres:/data/postgres
+    ports:
+      - ${DATABASE_EXPOSED_PORT}:${DATABASE_PORT}
+    networks:
+      - trcplat-net
+    restart: unless-stopped
+
+  pgbouncer:
+    container_name: platcore-pgboucer
+    image: bitnami/pgbouncer:latest
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      POSTGRESQL_HOST: ${POSTGRESQL_HOST}
+      POSTGRESQL_DATABASE: ${POSTGRES_DB}
+      POSTGRESQL_USERNAME: ${POSTGRES_USER}
+      POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRESQL_PORT: ${DATABASE_PORT}
+      PGBOUNCER_DATABASE: ${PGBOUNCER_DATABASE}
+      PGBOUNCER_AUTH_USER: ${PGBOUNCER_AUTH_USER}
+      PGBOUNCER_POOL_MODE: ${PGBOUNCER_POOL_MODE}
+      PGBOUNCER_MAX_DB_CONNECTIONS: ${PGBOUNCER_MAX_DB_CONNECTIONS}
+      PGBOUNCER_IDLE_TRANSACTION_TIMEOUT: ${PGBOUNCER_IDLE_TRANSACTION_TIMEOUT}
+      PGBOUNCER_DEFAULT_POOL_SIZE: ${PGBOUNCER_DEFAULT_POOL_SIZE}
+      PGBOUNCER_MIN_POOL_SIZE: ${PGBOUNCER_MIN_POOL_SIZE}
+      PGBOUNCER_RESERVE_POOL_SIZE: ${PGBOUNCER_RESERVE_POOL_SIZE}
+    volumes:
+      - ${VOLUME_PATH}pgbouncer:/docker-entrypoint-initdb.d
+    ports:
+      - ${PGBOUNCER_PORT}:${PGBOUNCER_PORT}
+    depends_on:
+      - postgres
+    networks:
+      - trcplat-net
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: platcore-pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - ${VOLUME_PATH}pgadmin:/var/lib/pgadmin
+    ports:
+      - ${PGADMIN_PORT}:80
+    depends_on:
+      - postgres
+    networks:
+      - trcplat-net
+    restart: unless-stopped

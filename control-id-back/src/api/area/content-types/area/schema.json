@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "areas",
+  "info": {
+    "singularName": "area",
+    "pluralName": "areas",
+    "displayName": "Area",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "pluginOptions": {},
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "capacity": {
+      "pluginOptions": {},
+      "type": "integer"
+    },
+    "externalArea": {
+      "pluginOptions": {},
+      "type": "boolean",
+      "default": true
+    },
+    "informZoneCapacity": {
+      "pluginOptions": {},
+      "type": "boolean",
+      "default": true
+    },
+    "photoArea": {
+      "type": "text"
+    },
+    "historico": {
+      "type": "json"
+    }
+  }
+}

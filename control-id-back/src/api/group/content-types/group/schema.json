@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "groups",
+  "info": {
+    "singularName": "group",
+    "pluralName": "groups",
+    "displayName": "Groups",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "description": {
+      "pluginOptions": {},
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "pluginOptions": {},
+      "type": "enumeration",
+      "enum": [
+        "Persons",
+        "Company"
+      ]
+    },
+    "maximumTime": {
+      "pluginOptions": {},
+      "type": "time"
+    },
+    "doubleEntry": {
+      "pluginOptions": {},
+      "type": "boolean",
+      "default": true
+    },
+    "credit": {
+      "pluginOptions": {},
+      "type": "boolean",
+      "default": true
+    },
+    "blacklist": {
+      "pluginOptions": {},
+      "type": "boolean",
+      "default": true
+    },
+    "companyID": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "companyName": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "tradeName": {
+      "pluginOptions": {},
+      "type": "string"
+    },
+    "igonreAntiDoubleEntry": {
+      "pluginOptions": {},
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
