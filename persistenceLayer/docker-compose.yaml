@@ -4,19 +4,38 @@ networks:
     driver: bridge
 
 services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+    environment:
+      - HOST=0.0.0.0
+      - PORT=1337
+      - APP_KEYS=RykSv050QF3VwI+GGxfOHQ==,ijW7WFTnO+U+QDpPB7Pviw==,gg1BfzVc9ePnFUqkfMmFUA==,/6O1BSScgPvZqrzJ3psIBg==
+      - API_TOKEN_SALT=51VkqWLVr9KaTtrR8IznoQ==
+      - ADMIN_JWT_SECRET=53bOfK1JkE5v6JgG8EUkFA==
+      - TRANSFER_TOKEN_SALT=dTldd40B0rFE810Dumctyg==
+      - DATABASE_CLIENT=postgres
+      - DATABASE_POOL_MIN=2
+      - DATABASE_POOL_MAX=10
+      - DATABASE_URL=postgres://msLabUser:MsLabApp@postgres:5432/trcplat
+      - JWT_SECRET=VmafqZGTNYXwdGMWBTwKYQ==
+    network_mode: service:postgres
+
   postgres:
     container_name: platcore-postgres-db
     image: postgres:16
     environment:
-      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      PGDATA: ${PGDATA}
+      POSTGRES_DB: trcplat
+      POSTGRES_USER: msLabUser
+      POSTGRES_PASSWORD: MsLabApp
     volumes:
-      - ${VOLUME_PATH}postgres:/data/postgres
+      - postgres-data:/data/postgres
     ports:
-      - ${DATABASE_EXPOSED_PORT}:${DATABASE_PORT}
+      - "5432:5432"
     networks:
       - trcplat-net
     restart: unless-stopped
@@ -25,24 +44,19 @@ services:
     container_name: platcore-pgboucer
     image: bitnami/pgbouncer:latest
     environment:
-      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
-      POSTGRESQL_HOST: ${POSTGRESQL_HOST}
-      POSTGRESQL_DATABASE: ${POSTGRES_DB}
-      POSTGRESQL_USERNAME: ${POSTGRES_USER}
-      POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRESQL_PORT: ${DATABASE_PORT}
-      PGBOUNCER_DATABASE: ${PGBOUNCER_DATABASE}
-      PGBOUNCER_AUTH_USER: ${PGBOUNCER_AUTH_USER}
-      PGBOUNCER_POOL_MODE: ${PGBOUNCER_POOL_MODE}
-      PGBOUNCER_MAX_DB_CONNECTIONS: ${PGBOUNCER_MAX_DB_CONNECTIONS}
-      PGBOUNCER_IDLE_TRANSACTION_TIMEOUT: ${PGBOUNCER_IDLE_TRANSACTION_TIMEOUT}
-      PGBOUNCER_DEFAULT_POOL_SIZE: ${PGBOUNCER_DEFAULT_POOL_SIZE}
-      PGBOUNCER_MIN_POOL_SIZE: ${PGBOUNCER_MIN_POOL_SIZE}
-      PGBOUNCER_RESERVE_POOL_SIZE: ${PGBOUNCER_RESERVE_POOL_SIZE}
-    volumes:
-      - ${VOLUME_PATH}pgbouncer:/docker-entrypoint-initdb.d
+      POSTGRESQL_HOST: postgres
+      POSTGRESQL_DATABASE: trcplat
+      POSTGRESQL_USERNAME: msLabUser
+      POSTGRESQL_PASSWORD: MsLabApp
+      PGBOUNCER_PORT: 6432
+      PGBOUNCER_DATABASE: pgbouncer
+      PGBOUNCER_POOL_MODE: transaction
+      PGBOUNCER_MAX_DB_CONNECTIONS: 100
+      PGBOUNCER_DEFAULT_POOL_SIZE: 20
+      PGBOUNCER_MIN_POOL_SIZE: 0
+      PGBOUNCER_RESERVE_POOL_SIZE: 0
     ports:
-      - ${PGBOUNCER_PORT}:${PGBOUNCER_PORT}
+      - "6432:6432"
     depends_on:
       - postgres
     networks:
@@ -53,15 +67,18 @@ services:
     container_name: platcore-pgadmin
     image: dpage/pgadmin4:latest
     environment:
-      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: adminpassword
     volumes:
-      - ${VOLUME_PATH}pgadmin:/var/lib/pgadmin
+      - pgadmin-data:/var/lib/pgadmin
     ports:
-      - ${PGADMIN_PORT}:80
+      - "5050:80"
     depends_on:
       - postgres
     networks:
       - trcplat-net
     restart: unless-stopped
+
+volumes:
+  postgres-data:
+  pgadmin-data:
