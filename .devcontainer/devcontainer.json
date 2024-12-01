@@ -1,13 +1,14 @@
 {
-  "name": "Control ID - POC",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-18",
+  "name": "Control ID Project",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {},
-    "ghcr.io/devcontainers/features/postgresql:1": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
-  "forwardPorts": [5173, 1337, 5432],
-  "postCreateCommand": "npm install && npm run setup-db",
-  "postStartCommand": "npm run dev",
+  "forwardPorts": [5173, 1337, 5432, 6432, 5050],
+  "postCreateCommand": "chmod +x start-project.sh && ./start-project.sh",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -17,5 +18,18 @@
         "mtxr.sqltools-driver-pg"
       ]
     }
+  },
+  "remoteEnv": {
+    "HOST": "0.0.0.0",
+    "PORT": "1337",
+    "APP_KEYS": "RykSv050QF3VwI+GGxfOHQ==,ijW7WFTnO+U+QDpPB7Pviw==,gg1BfzVc9ePnFUqkfMmFUA==,/6O1BSScgPvZqrzJ3psIBg==",
+    "API_TOKEN_SALT": "51VkqWLVr9KaTtrR8IznoQ==",
+    "ADMIN_JWT_SECRET": "53bOfK1JkE5v6JgG8EUkFA==",
+    "TRANSFER_TOKEN_SALT": "dTldd40B0rFE810Dumctyg==",
+    "DATABASE_CLIENT": "postgres",
+    "DATABASE_POOL_MIN": "2",
+    "DATABASE_POOL_MAX": "10",
+    "DATABASE_URL": "postgres://msLabUser:MsLabApp@postgres:5432/trcplat",
+    "JWT_SECRET": "VmafqZGTNYXwdGMWBTwKYQ=="
   }
 }
